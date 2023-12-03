@@ -3,7 +3,6 @@
 """
 import asyncio
 import time
-
 import aiohttp
 from proxy_redis import ProxyRedis
 
@@ -11,7 +10,7 @@ from proxy_redis import ProxyRedis
 async def test_ip(ip, p_r, sem):
 	try:
 		# 信号量并发控制
-		async with sem:
+		async with (sem):
 			async with aiohttp.ClientSession() as session:
 				async with session.get('http://httpbin.org/ip', proxy='http://' + ip,
 				                       timeout=10) as resp:
