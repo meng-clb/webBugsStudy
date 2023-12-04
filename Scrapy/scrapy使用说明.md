@@ -40,3 +40,38 @@ scrapy shell 网址
 ![img.png](img/settings_1.png)
 ![img.png](img/settings_2.png)
 参考链接: [settings配置信息](https://www.jianshu.com/p/df9c0d1e9087)
+
+## items.py 定义要存储的字段
+
+```python
+class BiedoulfileItem(scrapy.Item):
+    # define the fields for your item here like:
+    # name = scrapy.Field()
+    # 定义要存储的字段 定义title, con, 只能存储这两个字段, 存入其它则报错
+    title = scrapy.Field()
+    con = scrapy.Field()
+```
+
+## piplines.py 管道
++ 默认是关闭状态, 需要在settings里开启
++ 管道需要开启和关闭, 在piplines.py中定义开启函数和关闭函数
+```python
+class BiedoulfilePipeline:
+	# 开启爬虫的时候执行一次
+	def open_spider(self, item):
+		self.f = open('biedoul.txt', 'w', encoding='utf-8')
+
+	# 实现对item对象数据的处理
+	def process_item(self, item, spider):
+		# 取出item对象中的数据
+		self.f.write(item['title'] + '\n')
+		self.f.write(item['con'] + '\n')
+		return item
+
+	# 关闭爬虫的时候执行一次
+	def close_spider(self, item):
+		self.f.close()
+
+```
+
+
