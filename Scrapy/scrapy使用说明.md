@@ -56,21 +56,18 @@ class BiedoulfileItem(scrapy.Item):
 + 默认是关闭状态, 需要在settings里开启
 + 管道需要开启和关闭, 在piplines.py中定义开启函数和关闭函数
 ```python
-class BiedoulfilePipeline:
+class BiedoulmysqlPipeline:
 	# 开启爬虫的时候执行一次
 	def open_spider(self, item):
-		self.f = open('biedoul.txt', 'w', encoding='utf-8')
+		pass
 
 	# 实现对item对象数据的处理
 	def process_item(self, item, spider):
-		# 取出item对象中的数据
-		self.f.write(item['title'] + '\n')
-		self.f.write(item['con'] + '\n')
 		return item
 
 	# 关闭爬虫的时候执行一次
 	def close_spider(self, item):
-		self.f.close()
+		pass
 
 ```
 
