@@ -68,7 +68,6 @@ class BiedoulmysqlPipeline:
 	# 关闭爬虫的时候执行一次
 	def close_spider(self, item):
 		pass
-
 ```
 
 
