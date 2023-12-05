@@ -40,6 +40,21 @@ scrapy shell 网址
 ![img.png](img/settings_1.png)
 ![img.png](img/settings_2.png)
 参考链接: [settings配置信息](https://www.jianshu.com/p/df9c0d1e9087)
+```python
+# 推荐配置, 可直接食用
+ROBOTSTXT_OBEY = False  # 是否遵循爬虫协议
+LOG_LEVEL = 'ERROR'  # 控制台只打印报错信息
+DEFAULT_REQUEST_HEADERS = { ## 请求头
+	"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+	"Accept-Language": "en",
+	'User-Agent':
+		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+		'Chrome/119.0.0.0 Safari/537.36'
+}
+ITEM_PIPELINES = {  # 使用scrapy管道
+   "biedoulMysql.pipelines.BiedoulmysqlPipeline": 300,
+}
+```
 
 ## items.py 定义要存储的字段
 
