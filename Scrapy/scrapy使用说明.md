@@ -61,8 +61,8 @@ ITEM_PIPELINES = {  # 使用scrapy管道
 }
 ```
 同时存储到文件案例
-![img_1.png](douban_mysql.png)
-![img_2.png](douban_file.png)
+![img_1.png](img/douban_mysql.png)
+![img_2.png](img/douban_file.png)
 
 ## items.py 定义要存储的字段
 
