@@ -10,6 +10,7 @@ mySpider/settings.py: 项目的设置文件。
 mySpider/spiders/: 存储爬虫代码目录。
 ```
 
+## 创建项目
 ```
 scrapy startproject '爬虫名'  # 创建scrapy项目
 scrapy crawl '爬虫名'  # 运行项目
@@ -51,10 +52,17 @@ DEFAULT_REQUEST_HEADERS = { ## 请求头
 		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
 		'Chrome/119.0.0.0 Safari/537.36'
 }
+
+# 将获取的数据同时存储到数据库和文件内
+# 在管道文件内, 添加多个类, 在配置文件中开启配置
 ITEM_PIPELINES = {  # 使用scrapy管道
-   "biedoulMysql.pipelines.BiedoulmysqlPipeline": 300,
+	"douban.pipelines.DoubanPipeline": 300,  # 优先级最高
+	"douban.pipelines.DoubanfilePipeline": 400,  # 优先级最低
 }
 ```
+同时存储到文件案例
+![img_1.png](douban_mysql.png)
+![img_2.png](douban_file.png)
 
 ## items.py 定义要存储的字段
 
