@@ -17,7 +17,7 @@ class WySpider(scrapy.Spider):
 	# 创建Chrome WebDriver并传入无头模式选项
 	driver = Chrome(options=chrome_options)
 
-	page_index = [1]  # 获取列表内国内和世界的url下标
+	page_index = [1, 2]  # 获取列表内国内和世界的url下标
 	page_urls = []
 
 	def parse(self, response):
