@@ -1,6 +1,7 @@
 import requests
 from lxml import etree
 from urllib.parse import urljoin
+import os
 
 headers = {
 	'User-Agent':
@@ -73,6 +74,17 @@ def get_detail_urls(url, html):
 	return detail_urls
 
 
+# 获取每个类型的名字, 用来做类型文件夹名
+def get_classify_name(html):
+	"""
+	获取每个类型的名字, 用来做类型文件夹名
+	:param html: 详情页的源码对象
+	:return: 当前分类的名字
+	"""
+	classify_name = html.xpath('//h1/a[2]/text()')[0]
+	return classify_name
+
+
 # 获取图片的url地址
 def get_img_url(html, detail_url):
 	"""
@@ -90,41 +102,77 @@ def get_img_url(html, detail_url):
 	return img_urls
 
 
+# 获取图片页的页码
+def get_img_page():
+	return
+
+
+# 获取到当前图片的出镜人名字, 做细一级的文件夹名
+def get_men_name(html):
+	"""
+	获取到当前图片的出镜人名字, 做细一级的文件夹名
+	:param html: 图片页的源码对象
+	:return: 出镜人姓名
+	"""
+	men_name = html.xpath('//div[@class="item_info"]/div/a[3]/span/text()')[0]
+	return men_name
+
+
+# 获取图片的bytes数据
+def get_img_content(url):
+	"""
+	获取图片的bytes数据
+	:param url: 图片的url
+	:return: 图片的bytes数据
+	"""
+	resp = requests.get(url)
+	return resp.content
+
+
+# 下载图片到本地
+def down_img(classify_name, men_name, img_name, img_content):
+	path = os.path.join('img', classify_name, men_name)
+	if not os.path.exists(path):
+		os.makedirs(path)
+		print(img_name + '开始下载')
+	with open(path + '/' + img_name, 'wb') as f:
+		f.write(img_content)
+
+
 if __name__ == '__main__':
 	# 秀人集首页url
 	home_url = 'https://www.xr06.xyz/'
-	home_html = get_html(home_url)
-	menu_urls = get_menu_urls(home_html, home_url)
-	for url in menu_urls:
-		html = get_html(url)
-		page_count = get_detail_page(html)
-		for i in range(1, page_count):
-			if i == 1:
-				# print(url)
-				html = get_html(url)
-				detail_urls = get_detail_urls(url, html)
-				print(f'{url}页面的链接: {detail_urls}')
-				for detail_url in detail_urls:
-					# print(detail_url)
-					html = get_html(detail_url)
-					img_urls = get_img_url(html, detail_url)
+	home_html = get_html(home_url)  # 首页源码xpath对象
+	menu_urls = get_menu_urls(home_html, home_url)  # 菜单内分类的url
+	for detail_url in menu_urls:
+		print('开始获取类型')
+		detail_html = get_html(detail_url)  # 菜单内每一类的源码xpath对象
+		detail_page_count = get_detail_page(detail_html)  # 详情页的所有页数
+		classify_name = get_classify_name(detail_html)  # 获取当前的类型, 用来做类型文件夹名称
+		for i in range(detail_page_count):  # 总共有多少页预览, 就抓取多少页的预览
+			print('开始获取详情页内容')
+			if i == 1:  # 第一页url最特别, 单独拿出来
+				detail_urls = get_detail_urls(detail_url, detail_html)  # 获取到每个预览详情页的url
+				for url in detail_urls:
+					print('开始获取图片链接')
+					imgs_html = get_html(url)  # 图片页的源码xpath对象
+					img_urls = get_img_url(imgs_html, url)  # 获取图片页所有图片的url
+					men_name = get_men_name(imgs_html)  # 图片出镜人的名字
 					for img_url in img_urls:
-						resp = requests.get(img_url, headers=headers)
-						name = img_url.split('/')[-1]
-						print(f'开始保存{img_url}页面的图片')
-						with open('img/' + name, 'wb') as f:
-							f.write(resp.content)
-					# break
+						print('开始下载图片')
+						img_name = img_url.split('/')[-1]  # 分割图片的链接, 用来做图片名
+						img_content = get_img_content(img_url)  # 获取到图片的bytes数据
+						down_img(classify_name, men_name, img_name, img_content)  # 下载图片
 			else:
-				# new_url = f'{url}/index{i}.html'
-				# # print(new_url)
-				# html = get_html(new_url)
-				# detail_urls = get_detail_urls(url, html)
-				# print(f'{new_url}页面的链接: {detail_urls}')
-				# for detail_url in detail_urls:
-				# 	# print(detail_url)
-				# 	html = get_html(detail_url)
-				# 	get_img_url(html, detail_url)
-				# 	break
-				pass
-		break
+				new_detail_url = detail_url + f'/index{i}.html'  # 处理预览页新的url
+				detail_urls = get_detail_urls(new_detail_url, detail_html)  # 获取到每个预览详情页的url
+				for url in detail_urls:
+					print('开始获取图片链接')
+					imgs_html = get_html(url)  # 图片页的源码xpath对象
+					img_urls = get_img_url(imgs_html, url)  # 获取图片页所有图片的url
+					men_name = get_men_name(imgs_html)  # 图片出镜人的名字
+					for img_url in img_urls:
+						print('开始下载图片')
+						img_name = img_url.split('/')[-1]  # 分割图片的链接, 用来做图片名
+						img_content = get_img_content(img_url)  # 获取到图片的bytes数据
+						down_img(classify_name, men_name, img_name, img_content)  # 下载图片
