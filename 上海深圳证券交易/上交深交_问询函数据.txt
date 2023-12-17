@@ -2,3 +2,6 @@
 具体可以参考这个网站: https://blog.csdn.net/weixin_38421869/article/details/88976181
 上交: http://www.sse.com.cn/disclosure/credibility/supervision/inquiries/和
 深交: http://www.szse.cn/disclosure/supervision/inquire/index.html
+
+上交数据已爬取, 但是只有单线程, 速度不够快, 待更新
+深交未爬取, 待更新
