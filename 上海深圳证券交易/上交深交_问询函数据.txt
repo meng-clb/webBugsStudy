@@ -1,0 +1,4 @@
+需要爬上交所和深交所问询函数据，形成表格和代码。
+具体可以参考这个网站: https://blog.csdn.net/weixin_38421869/article/details/88976181
+上交: http://www.sse.com.cn/disclosure/credibility/supervision/inquiries/和
+深交: http://www.szse.cn/disclosure/supervision/inquire/index.html
