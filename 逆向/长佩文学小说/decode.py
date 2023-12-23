@@ -4,14 +4,14 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad,pad
 import base64
 
-chatper_id = 5241236  # 章节的id
+chatper_id = 5251336  # 章节的id
 
 url = f'https://m.gongzicp.com/webapi/novel/chapterGetInfo?cid={chatper_id}&server=0'
 
 headers = {
 	'Cookie': '_c_n_=bc5d852bfcad2c0e60bc0c8aac0047d2; PHPSESSID=tkisdlg9kk04dj0okdk5nfi4j6',
 	'Token': '426e9ecd47712da625f3ac863b02b3e2',
-	'Referer': 'https://m.gongzicp.com/read-5484072.html',
+	'Referer': 'https://m.gongzicp.com',
 	'User-Agent':
 		'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
 		'Chrome/120.0.0.0 Safari/537.36'
