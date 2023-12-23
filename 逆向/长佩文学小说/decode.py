@@ -4,7 +4,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad,pad
 import base64
 
-chatper_id = 5251336  # 章节的id
+chatper_id = 5458071  # 章节的id
 
 url = f'https://m.gongzicp.com/webapi/novel/chapterGetInfo?cid={chatper_id}&server=0'
 
