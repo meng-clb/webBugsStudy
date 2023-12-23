@@ -40,6 +40,3 @@ text_bytes = base64.b64decode(decode_content)
 text_bytes = aes.decrypt(text_bytes)
 text = unpad(text_bytes, AES.block_size).decode('utf-8')  # 自动获取字节填充量大小
 print(text)
-
-
-
